@@ -6,15 +6,12 @@ class Car {
   constructor() {
     this.readData = fs.readFileSync(jsonPath);
     const json = JSON.parse(this.readData);
-    console.log({ json });
-    if (json == {} || json.table == undefined) {
+    if (json == {} || json.table == undefined || json.table.length == 0) {
       this.nextSlot = 1;
-      this.slotCount = 0;
       return;
     }
     this.obj = json;
     this.nextSlot = new Number(this.obj.table.pop().slotNumber) + 1;
-    this.slotCount = this.obj.table.length();
   }
 
   obj = {
@@ -25,6 +22,14 @@ class Car {
     this.carData = { slotNumber: this.nextSlot, plateNumber };
   }
 
+  get slotCount() {
+    const json = JSON.parse(this.readData);
+    if (json == {} || json.table == undefined) {
+      return 0;
+    }
+    return this.obj.table.length + 1;
+  }
+
   saveCarToPack() {
     try {
       const json = JSON.parse(this.readData);
@@ -33,7 +38,6 @@ class Car {
       }
 
       this.obj.table.push(this.carData);
-      this.slotCount = this.obj.table.length();
       const jsonToFile = JSON.stringify(this.obj);
       fs.writeFileSync(jsonPath, jsonToFile);
 
@@ -52,7 +56,6 @@ class Car {
         (car) => car.slotNumber !== slotNumber
       );
       this.obj.table = newObj;
-      this.slotCount = this.obj.table.length();
       const jsonToFile = JSON.stringify(newObj);
       fs.writeFileSync(jsonPath, jsonToFile);
       return true;
@@ -65,9 +68,9 @@ class Car {
     if (json != {} || json.table !== undefined) {
       this.obj = json;
     }
-    const findObject = null;
+    let findObject = null;
 
-    this.obj.table.Map((car) => {
+    this.obj.table.map((car) => {
       if (
         car.slotNumber == slotOrPlateNumer ||
         car.plateNumber == slotOrPlateNumer
@@ -80,7 +83,9 @@ class Car {
 }
 
 module.exports = Car;
-// const c = new Car();
+const c = new Car();
 // c.newCar = "12-ff-gg-ff";
 // console.log(c.saveCarToPack());
-// // c.removeCarFromPack(2);
+// c.removeCarFromPack(2);
+// console.log(c.getCarInPack(2));
+// console.log(c.slotCount);
