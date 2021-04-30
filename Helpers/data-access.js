@@ -1,6 +1,6 @@
 const { error } = require("console");
 const fs = require("fs");
-const jsonPath = "../Data/pack.json";
+const jsonPath = "../Data/park.json";
 
 class Car {
   constructor() {
@@ -30,7 +30,7 @@ class Car {
     return this.obj.table.length + 1;
   }
 
-  saveCarToPack() {
+  saveCarToPark() {
     try {
       const json = JSON.parse(this.readData);
       if (json != {} || json.table !== undefined) {
@@ -47,7 +47,7 @@ class Car {
     }
   }
 
-  removeCarFromPack(slotNumber) {
+  removeCarFromPark(slotNumber) {
     const json = JSON.parse(this.readData);
     if (json != {} && json.table !== undefined) {
       this.obj = json;
@@ -63,7 +63,7 @@ class Car {
     return false;
   }
 
-  getCarInPack(slotOrPlateNumer) {
+  getCarInPark(slotOrPlateNumer) {
     const json = JSON.parse(this.readData);
     if (json != {} || json.table !== undefined) {
       this.obj = json;
@@ -85,7 +85,7 @@ class Car {
 module.exports = Car;
 const c = new Car();
 // c.newCar = "12-ff-gg-ff";
-// console.log(c.saveCarToPack());
-// c.removeCarFromPack(2);
-// console.log(c.getCarInPack(2));
+// console.log(c.saveCarToPark());
+// c.removeCarFromPark(2);
+// console.log(c.getCarInPark(2));
 // console.log(c.slotCount);
