@@ -1,12 +1,11 @@
 const { error } = require("console");
 const fs = require("fs");
-const jsonData = "../Data/pack.json";
-const MAX_SLOT = process.env.PACKING_LOT_SIZE;
+const jsonPath = "../Data/pack.json";
+
 class Car {
   constructor() {
-    const data = fs.readFileSync(jsonData);
-
-    const json = JSON.parse(data);
+    this.readData = fs.readFileSync(jsonPath);
+    const json = JSON.parse(this.readData);
     console.log({ json });
     if (json == {} || json.table == undefined) {
       this.nextSlot = 1;
@@ -28,9 +27,7 @@ class Car {
 
   saveCarToPack() {
     try {
-      const data = fs.readFileSync(jsonData);
-
-      const json = JSON.parse(data);
+      const json = JSON.parse(this.readData);
       if (json != {} || json.table !== undefined) {
         this.obj = json;
       }
@@ -38,7 +35,7 @@ class Car {
       this.obj.table.push(this.carData);
       this.slotCount = this.obj.table.length();
       const jsonToFile = JSON.stringify(this.obj);
-      fs.writeFileSync(jsonData, jsonToFile);
+      fs.writeFileSync(jsonPath, jsonToFile);
 
       return this.carData;
     } catch {
@@ -47,23 +44,24 @@ class Car {
   }
 
   removeCarFromPack(slotNumber) {
-    const data = fs.readFileSync(jsonData);
-    const json = JSON.parse(data);
-    if (json != {} || json.table !== undefined) {
+    const json = JSON.parse(this.readData);
+    if (json != {} && json.table !== undefined) {
       this.obj = json;
+
+      const newObj = this.obj.table.filter(
+        (car) => car.slotNumber !== slotNumber
+      );
+      this.obj.table = newObj;
+      this.slotCount = this.obj.table.length();
+      const jsonToFile = JSON.stringify(newObj);
+      fs.writeFileSync(jsonPath, jsonToFile);
+      return true;
     }
-    const newObj = this.obj.table.filter(
-      (car) => car.slotNumber !== slotNumber
-    );
-    this.obj.table = newObj;
-    this.slotCount = this.obj.table.length();
-    const jsonToFile = JSON.stringify(newObj);
-    fs.writeFileSync(jsonData, jsonToFile);
+    return false;
   }
 
   getCarInPack(slotOrPlateNumer) {
-    const data = fs.readFileSync(jsonData);
-    const json = JSON.parse(data);
+    const json = JSON.parse(this.readData);
     if (json != {} || json.table !== undefined) {
       this.obj = json;
     }
