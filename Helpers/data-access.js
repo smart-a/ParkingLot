@@ -1,29 +1,38 @@
 const { error } = require("console");
 const fs = require("fs");
 const jsonPath = "../Data/park.json";
+const readData = fs.readFileSync(jsonPath);
 
 class Car {
-  constructor() {
-    this.readData = fs.readFileSync(jsonPath);
-    const json = JSON.parse(this.readData);
-    if (json == {} || json.table == undefined || json.table.length == 0) {
-      this.nextSlot = 1;
-      return;
-    }
-    this.obj = json;
-    this.nextSlot = new Number(this.obj.table.pop().slotNumber) + 1;
-  }
-
   obj = {
     table: [],
   };
+
+  get nextSlot() {
+    const json = JSON.parse(readData);
+    if (json == {} || json.table == undefined || json.table.length == 0) {
+      return 1;
+    }
+    this.obj = json;
+    let val = 0;
+    this.obj.table.reduce((acc, mod) => {
+      if (acc == undefined) {
+        if (val == mod.slotNumber) val += 1;
+        return;
+      }
+      if (acc.slotNumber - mod.slotNumber > 1)
+        return (val = acc.slotNumber + 1);
+      val = acc.slotNumber + 1;
+    }, this.obj.table[0]);
+    return val;
+  }
 
   set newCar(plateNumber) {
     this.carData = { slotNumber: this.nextSlot, plateNumber };
   }
 
   get slotCount() {
-    const json = JSON.parse(this.readData);
+    const json = JSON.parse(readData);
     if (json == {} || json.table == undefined) {
       return 0;
     }
@@ -32,7 +41,7 @@ class Car {
 
   saveCarToPark() {
     try {
-      const json = JSON.parse(this.readData);
+      const json = JSON.parse(readData);
       if (json != {} || json.table !== undefined) {
         this.obj = json;
       }
@@ -48,7 +57,7 @@ class Car {
   }
 
   removeCarFromPark(slotNumber) {
-    const json = JSON.parse(this.readData);
+    const json = JSON.parse(readData);
     if (json != {} && json.table !== undefined) {
       this.obj = json;
 
@@ -64,7 +73,7 @@ class Car {
   }
 
   getCarInPark(slotOrPlateNumer) {
-    const json = JSON.parse(this.readData);
+    const json = JSON.parse(readData);
     if (json != {} || json.table !== undefined) {
       this.obj = json;
     }
@@ -89,3 +98,4 @@ const c = new Car();
 // c.removeCarFromPark(2);
 // console.log(c.getCarInPark(2));
 // console.log(c.slotCount);
+console.log(c.id);

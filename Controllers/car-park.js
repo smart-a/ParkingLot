@@ -14,7 +14,7 @@ module.exports.packCar = (req, res) => {
 
 //Remove car from pack
 module.exports.unpackCar = (req, res) => {
-  const slotNumber = req.body.slotNumber;
+  const slotNumber = req.params.slotNumber;
   if (slotNumber == null)
     return res.status(409).json({ message: "Please supply Car Slot Number" });
 
@@ -25,7 +25,7 @@ module.exports.unpackCar = (req, res) => {
 };
 
 module.exports.getPackedCar = (req, res) => {
-  const slotOrPlateNumer = req.body.slotOrPlateNumer;
+  const slotOrPlateNumer = req.params.slotOrPlateNumer;
   if (slotOrPlateNumer == null)
     return res
       .status(409)
