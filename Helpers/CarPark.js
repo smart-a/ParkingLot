@@ -12,7 +12,7 @@ class CarPark {
     table: [],
   };
 
-  get nextSlot() {
+  get nextSlotNumber() {
     const json = JSON.parse(this.readData);
     if (json == {} || json.table == undefined || json.table.length == 0) {
       return 1;
@@ -32,7 +32,7 @@ class CarPark {
   }
 
   set newCar(plateNumber) {
-    this.carData = { slotNumber: this.nextSlot, plateNumber };
+    this.carData = { slotNumber: this.nextSlotNumber, plateNumber };
   }
 
   get slotCount() {
@@ -47,7 +47,7 @@ class CarPark {
   saveCarToPark() {
     try {
       const json = JSON.parse(this.readData);
-      if (json != {} || json.table !== undefined) {
+      if (json != {} && json.table !== undefined && json.table.length > 0) {
         this.obj = json;
       }
 
@@ -102,10 +102,3 @@ class CarPark {
 }
 
 module.exports = CarPark;
-// const c = new CarPark();
-// c.newCar = "12-ff-gg-ff";
-// console.log(c.saveCarToPark());
-// c.removeCarFromPark(2);
-// console.log(c.getCarInPark(2));
-// console.log(c.slotCount);
-// console.log(c.id);
