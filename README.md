@@ -1,4 +1,4 @@
-# CAR PARK LOTS
+# CAR PARKING LOTS
 
 ## About
 
