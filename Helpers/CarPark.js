@@ -1,15 +1,19 @@
-const { error } = require("console");
 const fs = require("fs");
-const jsonPath = "../Data/park.json";
-const readData = fs.readFileSync(jsonPath);
-
+const defaultPath = "../data/park.json";
 class Car {
+  constructor(myPath = null) {
+    if (myPath == null) myPath = defaultPath;
+    this.readData = fs.readFileSync(myPath);
+
+    this.jsonPath = myPath;
+  }
+
   obj = {
     table: [],
   };
 
   get nextSlot() {
-    const json = JSON.parse(readData);
+    const json = JSON.parse(this.readData);
     if (json == {} || json.table == undefined || json.table.length == 0) {
       return 1;
     }
@@ -32,7 +36,7 @@ class Car {
   }
 
   get slotCount() {
-    const json = JSON.parse(readData);
+    const json = JSON.parse(this.readData);
     if (json == {} || json.table == undefined) {
       return 0;
     }
@@ -41,23 +45,23 @@ class Car {
 
   saveCarToPark() {
     try {
-      const json = JSON.parse(readData);
+      const json = JSON.parse(this.readData);
       if (json != {} || json.table !== undefined) {
         this.obj = json;
       }
 
       this.obj.table.push(this.carData);
       const jsonToFile = JSON.stringify(this.obj);
-      fs.writeFileSync(jsonPath, jsonToFile);
+      fs.writeFileSync(this.jsonPath, jsonToFile);
 
       return this.carData;
-    } catch {
-      throw new error();
+    } catch (error) {
+      throw new Error(error);
     }
   }
 
   removeCarFromPark(slotNumber) {
-    const json = JSON.parse(readData);
+    const json = JSON.parse(this.readData);
     if (json != {} && json.table !== undefined) {
       this.obj = json;
 
@@ -66,14 +70,14 @@ class Car {
       );
       this.obj.table = newObj;
       const jsonToFile = JSON.stringify(newObj);
-      fs.writeFileSync(jsonPath, jsonToFile);
+      fs.writeFileSync(this.jsonPath, jsonToFile);
       return true;
     }
     return false;
   }
 
   getCarInPark(slotOrPlateNumer) {
-    const json = JSON.parse(readData);
+    const json = JSON.parse(this.readData);
     if (json != {} || json.table !== undefined) {
       this.obj = json;
     }
@@ -92,10 +96,10 @@ class Car {
 }
 
 module.exports = Car;
-const c = new Car();
+// const c = new Car();
 // c.newCar = "12-ff-gg-ff";
 // console.log(c.saveCarToPark());
 // c.removeCarFromPark(2);
 // console.log(c.getCarInPark(2));
 // console.log(c.slotCount);
-console.log(c.id);
+// console.log(c.id);
