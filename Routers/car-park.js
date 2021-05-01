@@ -5,8 +5,8 @@ const { checkLimit } = require("../Middleware/park-limit");
 
 router.post("/", checkLimit, packCar);
 
-router.get("/:slotNumber", getPackedCar);
+router.get("/:slotOrPlateNumer", getPackedCar);
 
-router.delete("/:slotOrPlateNumer", unpackCar);
+router.delete("/:slotNumber", unpackCar);
 
 module.exports = router;
