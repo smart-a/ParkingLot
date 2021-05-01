@@ -6,6 +6,6 @@ module.exports.checkLimit = (req, res, next) => {
   const slotCount = new Number(car.slotCount);
   const maxSlot = new Number(MAX_SLOT);
   if (slotCount >= maxSlot)
-    return res.status(500).json({ message: "Maximum car parking reached" });
+    return res.status(403).json({ message: "Maximum car parking reached" });
   next();
 };
