@@ -1,6 +1,6 @@
 const fs = require("fs");
 const defaultPath = "../data/park.json";
-class Car {
+class CarPark {
   constructor(myPath = null) {
     if (myPath == null) myPath = defaultPath;
     this.readData = fs.readFileSync(myPath);
@@ -96,7 +96,7 @@ class Car {
 }
 
 module.exports = Car;
-// const c = new Car();
+// const c = new CarPark();
 // c.newCar = "12-ff-gg-ff";
 // console.log(c.saveCarToPark());
 // c.removeCarFromPark(2);
