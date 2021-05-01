@@ -7,7 +7,7 @@ The API is limited to a number slots and also a given number of request(s) at a 
 
 The following request is accepted:
 
-    1. **Post** request that allow the endpoint to park a car given in the request body the *car number* and return the *Slot number* and the *Car number*
+    1. __Post__ request that allow the endpoint to park a car given in the request body the *car number* and return the *Slot number* and the *Car number*
     2. **Get** request that allow the endpoint to get a particular car in the parking lot given the *Slot number* or the *Car number* in the request parameter and return the *Slot number* and the *Car number*
     3.  **Delete** request that allow the endpoint to unpark a car in the parking lot given the car *Slot number* and free the slot number to be use by another car
 
