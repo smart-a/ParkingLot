@@ -40,7 +40,8 @@ class CarPark {
     if (json == {} || json.table == undefined) {
       return 0;
     }
-    return this.obj.table.length + 1;
+    this.obj = json;
+    return this.obj.table.length;
   }
 
   saveCarToPark() {
@@ -51,6 +52,7 @@ class CarPark {
       }
 
       this.obj.table.push(this.carData);
+      this.obj.table.sort((a, b) => a.slotNumber - b.slotNumber);
       const jsonToFile = JSON.stringify(this.obj);
       fs.writeFileSync(this.jsonPath, jsonToFile);
 
@@ -66,12 +68,15 @@ class CarPark {
       this.obj = json;
 
       const newObj = this.obj.table.filter(
-        (car) => car.slotNumber !== slotNumber
+        (car) => car.slotNumber != slotNumber
       );
-      this.obj.table = newObj;
-      const jsonToFile = JSON.stringify(newObj);
-      fs.writeFileSync(this.jsonPath, jsonToFile);
-      return true;
+
+      if (newObj.length != this.obj.table.length) {
+        this.obj.table = newObj;
+        const jsonToFile = JSON.stringify(this.obj);
+        fs.writeFileSync(this.jsonPath, jsonToFile);
+        return true;
+      }
     }
     return false;
   }
@@ -89,6 +94,7 @@ class CarPark {
         car.plateNumber == slotOrPlateNumer
       ) {
         findObject = car;
+        return;
       }
     });
     return findObject;
