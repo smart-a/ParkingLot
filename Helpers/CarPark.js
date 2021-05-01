@@ -95,7 +95,7 @@ class CarPark {
   }
 }
 
-module.exports = Car;
+module.exports = CarPark;
 // const c = new CarPark();
 // c.newCar = "12-ff-gg-ff";
 // console.log(c.saveCarToPark());
