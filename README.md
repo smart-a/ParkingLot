@@ -13,7 +13,7 @@ The following request is accepted:
 
 ## How to use
 
-### Run this install dependency
+### Run this to install dependency
 
 ```
 npm install
